@@ -1,0 +1,90 @@
+.add_button{
+	position: fixed;
+	bottom: 13px;
+	right: 15px;
+	width: 34px;
+	height: 34px;
+}
+
+#hintProvider{
+	position: fixed;
+	bottom: 75px;
+	right: 15px;
+	width: 200px;
+	height: 210px;
+	border: 1px solid #000000; 
+	background-color: #f9f9f9;
+	padding: 16px 4px 4px 4px; 
+	margin: 0 auto;
+}
+
+.hidden{
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
+.label_text{
+	text-align: center;
+	font-size: 14px;
+	width: 100%;
+	margin-top: 2px;
+	margin-bottom: 2px; 
+}
+
+#sendButton{
+	display: block;
+	background-color: #076e4e;
+	color: #FFFFFF;
+	border-radius: 10px;
+	width: 80px;
+	height: 30px; 
+	margin: 5px auto;
+}
+
+#hintPvdContent{
+	display: block;
+	width: 180px;
+	height: 40%;
+	margin: 2px auto 5px auto;
+}
+
+#typeSelector{
+	display: block;
+	width: 150px;
+	margin: auto;
+	text-align: center;
+	font-size: 13px;
+}
+
+#hintDisplayer{
+	line-height: normal;
+}
+
+.textContent{
+	display: inline-block;
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+	color: #000000;
+	font-size: 16px;
+	vertical-align: middle;
+	line-height: normal;
+}
+
+.feedbackButton{
+	width: 24px;
+	height: 24px;
+	margin: 2px 4px;
+}
+
+.hintSelectorButton{
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin: auto;
+	vertical-align: middle;
+	line-height: normal;
+}

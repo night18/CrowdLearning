@@ -1,0 +1,50 @@
+{
+  "manifest_version": 2,
+
+  "name": "CrowdWork Guide",
+  "description": "This extension allows the user to change the background color of the current page.",
+  "version": "1.0",
+  "background": {
+    "persistent": true,
+    "scripts": ["background.js"]
+  },
+  "page_action": {
+    "default_icon": "img/inactive.png",
+    "default_popup": "html/logout.html",
+    "default_title": "CrowdWork Guide"
+  },
+  "content_scripts":[
+    {
+      "css": ["css/contentUI.css"],
+      "js": [
+        "lib/jquery-3.3.1.js",
+        "lib/chrome-extension-async.js",
+        "js/content.js",
+        "js/contentUI.js"
+      ],
+      "matches": ["https://worker.mturk.com/projects/*/tasks*"]
+    },
+    {
+      "js": [
+        "lib/jquery-3.3.1.js",
+        "js/hitList.js"
+      ],
+      "matches": ["https://worker.mturk.com/*"],
+      "exclude_globs": ["*tasks*"]
+
+    }
+  ],
+  "web_accessible_resources": [
+    "img/like.svg",
+    "img/dislike.svg",
+    "img/left_arrow.svg",
+    "img/right_arrow.svg",
+    "img/plus.svg"
+  ],
+  "permissions": [
+    "<all_urls>",
+    "activeTab",
+    "storage",
+    "tabs"
+  ]
+}
