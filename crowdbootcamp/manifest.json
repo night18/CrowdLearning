@@ -19,6 +19,7 @@
       "js": [
         "lib/jquery-3.3.1.js",
         "lib/chrome-extension-async.js",
+        "lib/sweetalert.min.js",
         "js/content.js",
         "js/contentUI.js"
       ],

@@ -5,6 +5,9 @@ Purpose: User interface of the website
 Modify History:
 **/
 
+let tips;
+let tipsIndex = 0;
+
 /*========== add tips ==========*/
 let hintProvider = document.createElement("div");
 hintProvider.id = "hintProvider";
@@ -61,6 +64,10 @@ categorizeOption.value = "categorize";
 categorizeOption.innerHTML = "Categorize";
 typeSelector.append(categorizeOption);
 
+let otherOption = document.createElement("option");
+otherOption.value = "others";
+otherOption.innerHTML = "Others";
+typeSelector.append(otherOption);
 
 let sendButton = document.createElement("button");
 sendButton.addEventListener("click", sendListener);
@@ -102,26 +109,15 @@ hintDisplayer.id = "hintDisplayer";
 let hintContainer = document.createElement("div");
 hintContainer.className = "textContent";
 
-let hintTitle = document.createElement("div");
-hintTitle.innerHTML = "Hint:";
-hintContainer.append(hintTitle);
+// let hintTitle = document.createElement("div");
+// hintTitle.innerHTML = "Hint:";
+// hintContainer.append(hintTitle);
 
 /*========== hint content ==========*/
 let hintContent = document.createElement("div");
 hintContent.id = "hintContent";
-hintContent.innerHTML = "fdsfgs fds fds hrurv urh frgr wer.";
+hintContent.innerHTML = "Loading Peer coaching";
 hintContainer.append(hintContent);
-
-let xhrPost = $.post("https://98f2afda.ngrok.io", {
-	method: "getTip"
-}).done(function(tipsString){
-	console.log(tipsString);
-	let tips = JSON.parse(tipsString);
-	$("#hintContent").text(tips[0].tip);
-	xhrPost.abort();
-});
-
-
 
 /*========== feedback ==========*/
 let feedbackContainer = document.createElement("div");
@@ -129,15 +125,72 @@ let feedbackContainer = document.createElement("div");
 /*========== like button ==========*/
 let likeButton = document.createElement("img");
 let likeURL = chrome.runtime.getURL("img/like.svg");
-likeButton.className = "feedbackButton";
+likeButton.className = "feedbackButton gray";
+likeButton.id = "likeButton";
 likeButton.src = likeURL;
+likeButton.addEventListener("click", function(e){
+	//Todo: only feedback once
+	let xhrLikePost = $.post(serverURL, {
+		method: "upvoteTip",
+		feedbacker_id: workerID,
+		tip_id: tips[tipsIndex]._id
+	}).done(function(response){
+		console.log(response);
+		console.log(JSON.parse(response));
+		switch (JSON.parse(response).score){
+			case 0:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case 1:
+				$("#likeButton").removeClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case -1:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").removeClass("gray");
+				break;
+		}
+		sweetAlert("Good job!", "Thanks for your feedback!", "success");
+		xhrLikePost.abort();
+	});
+});
+
 feedbackContainer.append(likeButton);
 
 /*========== dislike button ==========*/
 let dislikeButton = document.createElement("img");
 let dislikeURL = chrome.runtime.getURL("img/dislike.svg");
-dislikeButton.className = "feedbackButton";
+dislikeButton.className = "feedbackButton gray";
+dislikeButton.id = "dislikeButton";
 dislikeButton.src = dislikeURL;
+dislikeButton.addEventListener("click", function(e){
+	//Todo: only feedback once
+	let xhrDislikePost = $.post(serverURL, {
+		method: "downvoteTip",
+		feedbacker_id: workerID,
+		tip_id: tips[tipsIndex]._id
+	}).done(function(response){
+		console.log(response);
+		console.log(JSON.parse(response));
+		switch (JSON.parse(response).score){
+			case 0:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case 1:
+				$("#likeButton").removeClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case -1:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").removeClass("gray");
+				break;
+		}
+		sweetAlert("Good job!", "Thanks for your feedback!", "success");
+		xhrDislikePost.abort();
+	});
+});
 feedbackContainer.append(dislikeButton);
 
 hintContainer.append(feedbackContainer);
@@ -148,12 +201,23 @@ let preHintButton = document.createElement("img");
 let preURL = chrome.runtime.getURL("img/left_arrow.svg");
 preHintButton.className = "hintSelectorButton";
 preHintButton.src = preURL;
+preHintButton.addEventListener("click", function(e){
+	//Todo: record the view times
+	tipsIndex = tipsIndex==0? tips.length - 1: tipsIndex - 1;
+	$("#hintContent").text(tips[tipsIndex].tip);
+});
+
 
 /*========== right arrow button ==========*/
 let nextHintButton = document.createElement("img");
 let nextURL = chrome.runtime.getURL("img/right_arrow.svg");
 nextHintButton.className = "hintSelectorButton";
 nextHintButton.src = nextURL;
+nextHintButton.addEventListener("click", function(e){
+	//Todo: record the view times
+	tipsIndex = tipsIndex== tips.length - 1? 0 : tipsIndex + 1;
+	$("#hintContent").text(tips[tipsIndex].tip);
+});
 
 hintDisplayer.append(preHintButton);
 hintDisplayer.append(hintContainer);
