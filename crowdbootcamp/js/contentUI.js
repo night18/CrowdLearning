@@ -205,6 +205,7 @@ preHintButton.addEventListener("click", function(e){
 	//Todo: record the view times
 	tipsIndex = tipsIndex==0? tips.length - 1: tipsIndex - 1;
 	$("#hintContent").text(tips[tipsIndex].tip);
+	getFeedback(tips[tipsIndex]._id);
 });
 
 
@@ -217,6 +218,7 @@ nextHintButton.addEventListener("click", function(e){
 	//Todo: record the view times
 	tipsIndex = tipsIndex== tips.length - 1? 0 : tipsIndex + 1;
 	$("#hintContent").text(tips[tipsIndex].tip);
+	getFeedback(tips[tipsIndex]._id);
 });
 
 hintDisplayer.append(preHintButton);

@@ -32,6 +32,13 @@ Router.route("/", {where: "server"})
 						}
 					} );
 					break;
+				case "getFeedback":
+					Meteor.call("getFeedback", requestBody, (err, result) => {
+						if(!err){
+							this.response.end(result);
+						}
+					});
+					break;
 			}
 		}
 		

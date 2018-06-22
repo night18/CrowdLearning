@@ -51,12 +51,47 @@ chrome.runtime.sendMessage({method: "getHitSetID"}, function(response) {
 		requesterID: requesterID
 	}).done(function(tipsString){
 		console.log(tipsString);
-		tips = JSON.parse(tipsString);
-		$("#hintContent").text(tips[tipsIndex].tip);
+		if(tipsString == ""){
+			$("#hintContent").text("Be the first one providing tips!!");
+			$(".feedbackButton").addClass("hidden");
+			$(".hintSelectorButton").addClass("hidden");
+		}else{
+			tips = JSON.parse(tipsString);
+			$("#hintContent").text(tips[tipsIndex].tip);
+			getFeedback(tips[tipsIndex]._id);
+		}
+		
 		xhrPost.abort();
+		
 	});
 });
 
+let getFeedback = function(tipID){
+	let xhrfeedbackPost = $.post(serverURL, {
+		method: "getFeedback",
+		tip_id: tipID, 
+		feedbacker_id: workerID
+	}).done(function(scoreString){
+		let score = JSON.parse(scoreString).score;
+		console.log(score);
+
+		switch (score){
+			case 0:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case 1:
+				$("#likeButton").removeClass("gray");
+				$("#dislikeButton").addClass("gray");
+				break;
+			case -1:
+				$("#likeButton").addClass("gray");
+				$("#dislikeButton").removeClass("gray");
+				break;
+		}
+
+	});
+}
 
 
 let sendListener = function(){

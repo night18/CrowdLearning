@@ -260,6 +260,14 @@ Meteor.startup(() => {
 
 			
 		},
+		"getFeedback": function(requestBody){
+			let feedback = Feedback.find({tip_id: requestBody.tip_id, feedbacker_id: requestBody.feedbacker_id}).fetch();
+			if(feedback.length == 0){
+				return '{"score":0}';
+			} else {
+				return '{"score":'+feedback[0].score+'}';
+			}
+		},
 		"upvoteTip": function(requestBody){
 			let feedback = Feedback.find({tip_id: requestBody.tip_id, feedbacker_id: requestBody.feedbacker_id}).fetch();
 			let tip = Tips.find({_id: requestBody.tip_id}).fetch()[0];
