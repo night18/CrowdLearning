@@ -20,13 +20,13 @@ Modify History:
 
 // 	}
 // );
-let serverURL = "https://07ad98e0.ngrok.io";
+let serverURL = "https://89bce34a.ngrok.io";
 
 let workerName = $(".me-bar a[href='/account']").text();
 let workerID = $(".me-bar .copyable-content").text();
 let hitSetID = "";
 let getHitDetail = function(){
-	let props = $("div.task-project-title span[data-react-class*='require']").attr("data-react-props");
+	let props = $("span[data-react-class*='ShowModal']").attr("data-react-props");
 	let detailJson = JSON.parse(props).modalOptions;
 	
 	return {
@@ -40,7 +40,6 @@ let hitdetail = getHitDetail();
 let requesterID = $("a[title='"+ hitdetail.requesterName +"']").attr("href").split("/")[2];
 
 chrome.runtime.sendMessage({method: "getHitSetID"}, function(response) {
-	console.log(response);
 	hitSetID = response.hitSetID;
 	let xhrPost = $.post(serverURL, {
 		method: "getTip",
@@ -50,7 +49,6 @@ chrome.runtime.sendMessage({method: "getHitSetID"}, function(response) {
 		requesterName: hitdetail.requesterName,
 		requesterID: requesterID
 	}).done(function(tipsString){
-		console.log(tipsString);
 		if(tipsString == ""){
 			$("#hintContent").text("Be the first one providing tips!!");
 			$(".feedbackButton").addClass("hidden");
@@ -73,7 +71,6 @@ let getFeedback = function(tipID){
 		feedbacker_id: workerID
 	}).done(function(scoreString){
 		let score = JSON.parse(scoreString).score;
-		console.log(score);
 
 		switch (score){
 			case 0:
@@ -108,7 +105,8 @@ let sendListener = function(){
 		hitTitle: hitdetail.hitTitle,
 		hitDesc: hitdetail.hitDesc,
 		requesterName: hitdetail.requesterName,
-		requesterID: requesterID
+		requesterID: requesterID,
+		create_timestamp: new Date().toUTCString()
 	}).done(function(data) {
 		$("#hintProvider").toggleClass("hidden");
 		$("#hintProvider").toggleClass("show");

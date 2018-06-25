@@ -110,6 +110,8 @@ Meteor.startup(() => {
 				return "imgtag";
 			}else if(title.includes("yourself")){
 				return "survey";
+			}else if(title.includes("official")){
+				return "data";
 			}
 			return "others";
 		}
@@ -198,24 +200,20 @@ Meteor.startup(() => {
 				hit_set_id: requestBody.hitSetID,
 				hit_type : requestBody.hitType,
 				tip: requestBody.content,
-				score: 0
+				score: 0,
+				create_timestamp: requestBody.create_timestamp
 			});
 			console.log("Success store raw tips to database");
 			
 		},
 		getTip: function(requestBody){
-			console.log(requestBody);
 			let topTips = [];
 
 			//Same ID
 			let tipsByID = Tips.find({hit_set_id: requestBody.hitSetID}).fetch();
 			if(tipsByID.length > 0){
-				console.log("topTips0");
-				console.log(topTips);
 				let topTipsByID = getTopTip(tipsByID, MAXTOPTIP);
 				topTips.push.apply(topTips, topTipsByID);
-				console.log("topTips1");
-				console.log(topTips);
 			}
 			
 			//Same type top
@@ -224,33 +222,27 @@ Meteor.startup(() => {
 			if(tipsByType.length > 0){
 				let topTipsByType = getTopTip(tipsByType, MAXTYPETOPTIP-topTips.length);
 				topTips.push.apply(topTips, topTipsByType);
-				console.log("topTips2");
-				console.log(topTips);
 			}
 
 			//Same type 
 			let tipsByTypeID = Tips.find({hit_type: hitType}).fetch();
 			tipsByType = shuffle(tipsByType);
-			console.log(tipsByType.length);
 			for(let i = tipsByType.length-1; i >= 0 ; i--){
 				let isAlreadyIn = false;
 				if(tipsByType[i].score > -3 ){
 					for(let j = 0 ; j < topTips.length; j++){
 						if(tipsByType[i]._id == topTips[j]._id){
-							console.log("####");
 							isAlreadyIn = true;
 							break;
 						}
 					}
 					if(!isAlreadyIn){
 						topTips.push(tipsByType.pop());
-						console.log("$$$$");
 						break;
 					}
 				}
 			}
-			console.log("!!!");
-			console.log(topTips);
+
 
 			if(topTips.length > 0){
 				return JSON.stringify(topTips);
@@ -275,7 +267,8 @@ Meteor.startup(() => {
 				Feedback.insert({
 					feedbacker_id: requestBody.feedbacker_id,
 					tip_id: requestBody.tip_id,
-					score: 1
+					score: 1,
+					create_timestamp: requestBody.create_timestamp
 				});
 				let tipScore = tip.score + 1;
 				Tips.update({_id: requestBody.tip_id}, {$set: {score: tipScore}});
@@ -307,7 +300,8 @@ Meteor.startup(() => {
 				Feedback.insert({
 					feedbacker_id: requestBody.feedbacker_id,
 					tip_id: requestBody.tip_id,
-					score: -1
+					score: -1,
+					create_timestamp: requestBody.create_timestamp
 				});
 				let tipScore = tip.score - 1;
 				Tips.update({_id: requestBody.tip_id}, {$set: {score: tipScore}});

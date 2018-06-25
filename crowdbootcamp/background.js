@@ -8,7 +8,7 @@ Modify History:
 
 var lastTabId = 0;
 
-const reg_domain = new RegExp("https*:\/\/worker.mturk.com\/",'i');
+const reg_domain = new RegExp("https:\/\/worker.mturk.com\/projects\/\w+\/",'i');
 
 //Fires when the active tab in a window changes
 chrome.tabs.onActivated.addListener(function(activeInfo){
@@ -23,30 +23,30 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 	// });
 })
 
-//Fired when a tab is updated.
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-	//see https://developer.chrome.com/extensions/tabs#event-onUpdated
-	lastTabId = tabId;
-	chrome.pageAction.show(lastTabId);
-	//To check whether the user is in Mturk
-	if(changeInfo.url){
-		if (reg_domain.test(changeInfo.url)){
-		chrome.pageAction.setIcon({
-			path: "img/active.png",
-			tabId: lastTabId
-		});
+// //Fired when a tab is updated.
+// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+// 	//see https://developer.chrome.com/extensions/tabs#event-onUpdated
+// 	lastTabId = tabId;
+// 	chrome.pageAction.show(lastTabId);
+// 	//To check whether the user is in Mturk
+// 	if(changeInfo.url){
+// 		if (reg_domain.test(changeInfo.url)){
+// 		chrome.pageAction.setIcon({
+// 			path: "img/active.png",
+// 			tabId: lastTabId
+// 		});
 
-		chrome.pageAction.setPopup({
-			tabId: lastTabId,
-			popup: "html/login.html"
-		});
+// 		chrome.pageAction.setPopup({
+// 			tabId: lastTabId,
+// 			// popup: "html/login.html"
+// 		});
 
 
 		
-		}
-	} 
+// 		}
+// 	} 
 	
-})
+// })
 
 chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse){

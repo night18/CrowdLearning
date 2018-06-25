@@ -133,10 +133,9 @@ likeButton.addEventListener("click", function(e){
 	let xhrLikePost = $.post(serverURL, {
 		method: "upvoteTip",
 		feedbacker_id: workerID,
-		tip_id: tips[tipsIndex]._id
+		tip_id: tips[tipsIndex]._id,
+		create_timestamp: new Date().toUTCString()
 	}).done(function(response){
-		console.log(response);
-		console.log(JSON.parse(response));
 		switch (JSON.parse(response).score){
 			case 0:
 				$("#likeButton").addClass("gray");
@@ -169,10 +168,9 @@ dislikeButton.addEventListener("click", function(e){
 	let xhrDislikePost = $.post(serverURL, {
 		method: "downvoteTip",
 		feedbacker_id: workerID,
-		tip_id: tips[tipsIndex]._id
+		tip_id: tips[tipsIndex]._id,
+		create_timestamp: new Date().toUTCString()
 	}).done(function(response){
-		console.log(response);
-		console.log(JSON.parse(response));
 		switch (JSON.parse(response).score){
 			case 0:
 				$("#likeButton").addClass("gray");

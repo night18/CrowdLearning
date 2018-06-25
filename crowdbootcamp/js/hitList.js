@@ -8,10 +8,6 @@ Modify History:
 let workerName = $(".me-bar a[href='/account']").text();
 let workerID = $(".me-bar .copyable-content").text();
 
-console.log(workerName);
-console.log(workerID);
-
-
 // console.log ($("ol.hit-set-table").parent().attr("data-react-props"));
 
 //Retrive all HIT data based on index

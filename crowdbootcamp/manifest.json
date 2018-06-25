@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "CrowdWork Guide",
+  "name": "Crowd Coach",
   "description": "This extension allows the user to change the background color of the current page.",
   "version": "1.0",
   "background": {
@@ -9,9 +9,8 @@
     "scripts": ["background.js"]
   },
   "page_action": {
-    "default_icon": "img/inactive.png",
-    "default_popup": "html/logout.html",
-    "default_title": "CrowdWork Guide"
+    "default_icon": "img/icon.png",
+    "default_title": "Crowd Coach"
   },
   "content_scripts":[
     {
@@ -24,15 +23,6 @@
         "js/contentUI.js"
       ],
       "matches": ["https://worker.mturk.com/projects/*/tasks*"]
-    },
-    {
-      "js": [
-        "lib/jquery-3.3.1.js",
-        "js/hitList.js"
-      ],
-      "matches": ["https://worker.mturk.com/*"],
-      "exclude_globs": ["*tasks*"]
-
     }
   ],
   "web_accessible_resources": [
