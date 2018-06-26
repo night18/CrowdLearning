@@ -102,6 +102,8 @@ Meteor.startup(() => {
 				return "survey";
 			}else if(title.includes("questionnaire")){
 				return "survey";
+			}else if(title.includes("second")){
+				return "audio";
 			}else if(title.includes("transcribe")){
 				return "imgtrans";
 			}else if(title.includes("speech")){
