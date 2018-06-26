@@ -186,7 +186,7 @@ Meteor.startup(() => {
 				tip: requestBody.content,
 				score: 0
 			});
-			console.log("Success store raw tips to database");
+			//console.log("Success store raw tips to database");
 		},
 		storeRawType: function(requestBody){
 			//Todo: think whether require to store the raw tips info

@@ -85,10 +85,12 @@ hintProvider.append(sendButton);
 $("body").append(hintProvider);
 
 /*========== add button ==========*/
-let addButton = document.createElement("img");
-let addURL = chrome.runtime.getURL("img/plus.svg");
+let addButton = document.createElement("button");
+//let addURL = chrome.runtime.getURL("img/plus.svg");
 addButton.className = "add_button";
-addButton.src = addURL;
+addButton.type = "button";
+addButton.innerHTML = "Provide Tip";
+//addButton.src = addURL;
 addButton.addEventListener("click", function(e){
 	$("#hintProvider").toggleClass("hidden");
 	$("#hintProvider").toggleClass("show");

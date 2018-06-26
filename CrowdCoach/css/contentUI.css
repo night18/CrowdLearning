@@ -1,9 +1,12 @@
 .add_button{
 	position: fixed;
-	bottom: 13px;
+	bottom: 1px;
 	right: 15px;
-	width: 34px;
-	height: 34px;
+	width: 120px;
+	height: 35px;
+	background-color: #519983;
+	color: #FFFFFF;
+	border-radius: 10px;
 }
 
 #hintProvider{

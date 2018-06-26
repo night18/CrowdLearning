@@ -3,7 +3,7 @@
 
   "name": "Crowd Coach",
   "description": "This extension allows the user to change the background color of the current page.",
-  "version": "1.0",
+  "version": "0.1.1",
   "background": {
     "persistent": true,
     "scripts": ["background.js"]
