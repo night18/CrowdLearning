@@ -2,12 +2,13 @@
   "manifest_version": 2,
 
   "name": "Crowd Coach",
-  "description": "This extension allows the user to change the background color of the current page.",
-  "version": "0.1.1",
+  "description": "Enhance your work on Amazon Mechanical Turk",
+  "version": "0.1.4.1",
   "background": {
     "persistent": true,
     "scripts": ["background.js"]
   },
+  "icons": {"128" : "img/icon.png"},
   "page_action": {
     "default_icon": "img/icon.png",
     "default_title": "Crowd Coach"

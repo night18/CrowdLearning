@@ -1,18 +1,29 @@
 .add_button{
-	position: fixed;
-	bottom: 1px;
+	/*position: fixed;*/
+	/*bottom: 1px;
 	right: 15px;
 	width: 120px;
-	height: 35px;
+	height: 35px;*/
+	font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 0.395rem 0.714rem;
+    line-height: 1.5;
+    border-radius: 2px;
 	background-color: #519983;
 	color: #FFFFFF;
-	border-radius: 10px;
+    border: 1px solid #519983;
+	font-size: 0.857rem;
+	margin-right: 0.7142rem !important;
+    display: inline !important;
 }
 
 #hintProvider{
 	position: fixed;
-	bottom: 75px;
-	right: 15px;
+	bottom: 10px;
+	left: 10px;
 	width: 200px;
 	height: 210px;
 	border: 1px solid #000000; 

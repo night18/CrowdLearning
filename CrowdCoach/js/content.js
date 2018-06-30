@@ -50,7 +50,7 @@ chrome.runtime.sendMessage({method: "getHitSetID"}, function(response) {
 		requesterID: requesterID
 	}).done(function(tipsString){
 		if(tipsString == ""){
-			$("#hintContent").text("Be the first one providing tips!!");
+			$("#hintContent").text("No tips yet! Provide a tip by clicking on the green 'provide tip' button at the bottom of the page!!");
 			$(".feedbackButton").addClass("hidden");
 			$(".hintSelectorButton").addClass("hidden");
 		}else{

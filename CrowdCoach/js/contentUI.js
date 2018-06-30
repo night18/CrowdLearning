@@ -91,12 +91,23 @@ addButton.className = "add_button";
 addButton.type = "button";
 addButton.innerHTML = "Provide Tip";
 //addButton.src = addURL;
-addButton.addEventListener("click", function(e){
+$(".work-pipeline-action").prepend(addButton);
+
+let addButtonParent = document.querySelectorAll(".add_button");
+for(let i = 0; i < addButtonParent.length; i++){
+	addButtonParent[i].addEventListener("click", function(e){
 	$("#hintProvider").toggleClass("hidden");
 	$("#hintProvider").toggleClass("show");
-});
+	});
+}
+// addButton.addEventListener("click", function(e){
+// 	$("#hintProvider").toggleClass("hidden");
+// 	$("#hintProvider").toggleClass("show");
+// });
 
-$("body").append(addButton);
+// $("body").append(addButton);
+
+
 
 /*========== hint displayer ==========*/
 $(".text-muted div:eq(0)").removeClass("col-xs-7");
