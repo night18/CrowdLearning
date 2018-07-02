@@ -245,6 +245,12 @@ Meteor.startup(() => {
 				}
 			}
 
+			Worker.insert({
+				hit_title: requestBody.hitTitle,
+				hit_set_id: requestBody.hitSetID,
+				worker_id : requestBody.workerID,
+				requester_id: requestBody.requesterID
+			});
 
 			if(topTips.length > 0){
 				return JSON.stringify(topTips);

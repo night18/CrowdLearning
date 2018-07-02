@@ -47,7 +47,8 @@ chrome.runtime.sendMessage({method: "getHitSetID"}, function(response) {
 		hitTitle: hitdetail.hitTitle,
 		hitDesc: hitdetail.hitDesc,
 		requesterName: hitdetail.requesterName,
-		requesterID: requesterID
+		requesterID: requesterID,
+		workerID: workerID
 	}).done(function(tipsString){
 		if(tipsString == ""){
 			$("#hintContent").text("No tips yet! Provide a tip by clicking on the green 'provide tip' button at the bottom of the page!!");
