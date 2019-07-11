@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import "./dataScheme.js";
 
 Meteor.startup(() => {
-	const MAXTOPTIP = 2;
-	const MAXNEWTIP = 1;
+	const MAXTOPTIP = 4;
 	const MAXTYPETOPTIP = 3;
 
 
@@ -30,7 +29,7 @@ Meteor.startup(() => {
 		let tipsByID = Tips.find({hit_set_id: id}).fetch();
 		let type = "";
 		let typeArray = [];
-		if(tipsByID.length > 0){
+		if(tipsByID.length > 2){
 			let maxCount = 0;
 			for(let i = 0; i < tipsByID.length; i++){
 				if (typeof typeArray[tipsByID[i].hit_set_id] == "undefined"){
@@ -54,13 +53,15 @@ Meteor.startup(() => {
 				return "data";
 			}else if(title.includes("webpage")){
 				return "data";
+			}else if(title.includes("web page")){
+				return "data";
 			}else if(title.includes("receipt")){
 				return "imgtrans";
 			}else if(title.includes("survey")){
 				return "survey";
 			}else if(title.includes("tag")){
 				return "imgtag";
-			}else if(title.includes("Categorization")){
+			}else if(title.includes("categorization")){
 				return "categorize";
 			}else if(title.includes("categorize")){
 				return "categorize";
@@ -120,58 +121,73 @@ Meteor.startup(() => {
 	}
 		
 	function getTopTip(tipArray, getCount){
-		let retrunTips = [];
+		let returnTips = [];
 		if(tipArray.length > 0){
 				tipArray.sort(function(a,b){return b.score - a.score});
 				// console.log(tipArray);
 				let tmpTips = []; //Handle the tips which has the same score 
-				let prvScore = -1; //The plugin do not display the tips which score is lower than -3
-				let prvIndex = -1;
+				let prvScore = -3; //The plugin do not display the tips which score is lower than -3
 				for(let i = 0 ; i < tipArray.length; i++){
-					if(tipArray[i].score != prvScore){
-						//Have enough tips to display
-						if(tmpTips.length != 0){
-							if(tmpTips.length < getCount - retrunTips.length ){
-								let tmpLength = tmpTips.length;
-								for(let j = 0; j < tmpLength; j++){
-									retrunTips.push(tmpTips.pop());
-								}
-							}else{ //Do not have enough space to display
+					//Have the same score with previous one
+					if(tipArray[i].score == prvScore){
+						tmpTips.push(tipArray[i]);
+						if( i == tipArray.length -1){
+							if(tmpTips.length > 0){
 								tmpTips = shuffle(tmpTips);
-								for (let j = 0; j < MAXTOPTIP - retrunTips.length; j++){
-									retrunTips.push(tmpTips.pop());
+								//Return tip list has enough space to put all temporary tip list 
+								if(tmpTips.length <= getCount - returnTips.length ){
+									let tmpLength = tmpTips.length;
+									for(let j = 0; j < tmpLength; j++){
+										returnTips.push(tmpTips.pop());
+									}
+									
+									return returnTips;
+
+								}else{ //Return tip list don't have enough space to put all temporary tip list 
+									let tmpLength = getCount - returnTips.length
+									for (let j = 0; j < tmpLength; j++){
+										returnTips.push(tmpTips.pop());
+									}
+									
+									return returnTips;
 								}
-							}
-							if(retrunTips.length >= getCount){
-								break;
+								
 							}
 						}
+					}else{ //The first one or different score
+						if(tmpTips.length > 0){
+							tmpTips = shuffle(tmpTips);
+							//Return tip list has enough space to put all temporary tip list 
+							if(tmpTips.length <= getCount - returnTips.length ){
+								let tmpLength = tmpTips.length;
+								for(let j = 0; j < tmpLength; j++){
+									returnTips.push(tmpTips.pop());
+								}
+							}else{ //Return tip list don't have enough space to put all temporary tip list 
+								let tmpLength = getCount - returnTips.length
+								for (let j = 0; j < tmpLength; j++){
+									returnTips.push(tmpTips.pop());
+								}
+								
+								return returnTips;
+							}
+							
+						}
 						prvScore = tipArray[i].score;
-						prvIndex = i;
-						tmpTips.push(tipArray[i]);
-						
-					}else{
 						tmpTips.push(tipArray[i]);
 					}
 
-					if(tmpTips.length < getCount - retrunTips.length ){
-						let tmpLength = tmpTips.length;
-						for(let j = 0; j < tmpLength; j++){
-							retrunTips.push(tmpTips.pop());
-						}
-					}else{ //Do not have enough space to display
-						tmpTips = shuffle(tmpTips);
-						for (let j = 0; j < getCount - retrunTips.length; j++){
-							retrunTips.push(tmpTips.pop());
-						}
+					if(returnTips.length == getCount){
+						break;
 					}
 					
 				}
-				return retrunTips;
+				
+				return returnTips;
 			}else{
 				//Todo: error message
 				console.log("There are no tips for the same hit id");
-				return retrunTips;
+				return returnTips;
 			}
 
 	}
@@ -210,7 +226,7 @@ Meteor.startup(() => {
 		},
 		getTip: function(requestBody){
 			let topTips = [];
-
+			console.log(requestBody.hitTitle.toLowerCase());
 			//Same ID
 			let tipsByID = Tips.find({hit_set_id: requestBody.hitSetID}).fetch();
 			if(tipsByID.length > 0){
@@ -220,30 +236,38 @@ Meteor.startup(() => {
 			
 			//Same type top
 			let hitType = guessHITType(requestBody.hitSetID, requestBody.hitTitle.toLowerCase(), requestBody.hitDesc.toLowerCase(), requestBody.requesterID);
-			let tipsByType = Tips.find({hit_type: hitType, hit_set_id: {$ne: requestBody.hitSetID}}).fetch();
-			if(tipsByType.length > 0){
-				let topTipsByType = getTopTip(tipsByType, MAXTYPETOPTIP-topTips.length);
-				topTips.push.apply(topTips, topTipsByType);
+			if(hitType != "others"){
+				console.log(hitType);
+				let tipsByType = Tips.find({hit_type: hitType, hit_set_id: {$ne: requestBody.hitSetID}}).fetch();
+				if(tipsByType.length > 0){
+					let topTipsByType = getTopTip(tipsByType, MAXTYPETOPTIP);
+					topTips.push.apply(topTips, topTipsByType);
+					// console.log(topTips);
+				}
 			}
 
-			//Same type 
-			let tipsByTypeID = Tips.find({hit_type: hitType}).fetch();
-			tipsByType = shuffle(tipsByType);
-			for(let i = tipsByType.length-1; i >= 0 ; i--){
-				let isAlreadyIn = false;
-				if(tipsByType[i].score > -3 ){
-					for(let j = 0 ; j < topTips.length; j++){
-						if(tipsByType[i]._id == topTips[j]._id){
-							isAlreadyIn = true;
+			if(hitType != "others"){
+				//Same type New, only add one new to the tip list
+				let tipsByTypeID = Tips.find({hit_type: hitType}).fetch();
+				tipsByTypeID = shuffle(tipsByTypeID); //random choose a advice from database
+				for(let i = tipsByTypeID.length-1; i >= 0 ; i--){
+					let isAlreadyIn = false;
+					if(tipsByTypeID[i].score > -3 ){
+						for(let j = 0 ; j < topTips.length; j++){
+							if(tipsByTypeID[i]._id == topTips[j]._id){
+								isAlreadyIn = true;
+								break;
+							}
+						}
+						if(!isAlreadyIn){
+							topTips.push(tipsByTypeID.pop());
 							break;
 						}
 					}
-					if(!isAlreadyIn){
-						topTips.push(tipsByType.pop());
-						break;
-					}
 				}
 			}
+
+			topTips = shuffle(topTips);
 
 			Worker.insert({
 				hit_title: requestBody.hitTitle,
@@ -253,6 +277,7 @@ Meteor.startup(() => {
 			});
 
 			if(topTips.length > 0){
+				console.log(topTips);
 				return JSON.stringify(topTips);
 			}else{
 				return "";

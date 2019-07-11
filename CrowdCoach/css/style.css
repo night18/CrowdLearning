@@ -1,71 +1,113 @@
 /*-------------------------------------------
 				General Part
 -------------------------------------------*/
+html{
+	padding: 0px;
+	margin: 0px;
+}
+
 body{
 	font-size: 14px;
+	padding: 0px;
+	margin: 0px;
 }
 
 .popup_container{
-	width: 350px;
+	width: 320px;
+	height: 450px;
+	background-color: #f7f5f1;
 }
 
-.btn{
-	font-size: 14px;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	border: 1px solid;
-	border-radius: 3px;
-    cursor: pointer;
-    white-space: nowrap;
+.head_container{
+	background-color: #77AB44;
+	height: 100px;
 }
 
-.btn:hover{
-	text-decoration: none;
-}
-
-a{
-    text-decoration: none;
-}
-
-a:hover{
-    text-decoration: none;
-}
-
-#inactive{
-	display: none;
-}
-
-#active{
-	display: block;
-}
-
-.login{
-	display: block;
-}
-
-/*-------------------------------------------
-				inactive Part
--------------------------------------------*/
-
-.btn-cyan{
-	color: #ffffff;
-	background-color: #20C1C6;
-	border-color: #20C1C6; 
-}
-
-.btn-main{
-	padding: 13px 0px ;
-	font-size: 18px;
-	border-radius: 6px;
-    line-height: 1.2;
-}
-
-.btn-full{
+.mturk_id{
 	width: 100%;
-	display: block;
+	padding: 15px 10px;
+	text-align: center;
+	font-size:14px;
+	font-weight: bold;
+	color: #F3F3F3;
 }
 
-#inactive{
-	margin: 10px 25px 20px;
+.type_container{
+	height: 38px;
+	overflow-x: auto;
+	/*white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;*/
+}
+
+.sections{
+ 	white-space: nowrap;
+    min-width: 945px;
+    height: 38px;
+}
+
+.type_container button{
+	text-align: center;
+	height: 29px;
+    padding: 14px;
+    -moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #b2b8ad;
+	display:inline-block;
+	font-weight:bold;
+	padding:6px 20px;
+	margin: 5px 2px;
+	text-decoration:none;
+
+	/*display: inline-block;*/
+
+	float: left;
+	display: flex;
+	align-items: center;
+
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+
+}
+
+.type_container::-webkit-scrollbar {
+  display: none; }
+
+
+.drawer {
+	width: 320px;
+	height: 60px;
+	position: absolute;
+	bottom: 0;
+	background-color: #546b34;
+	display: table;
+    table-layout: fixed;
+    vertical-align: middle;
+}
+
+.drawer div{
+	padding: 5px 4px;
+	display: table-cell;
+	background-color: #77AB44;
+	color: #e0e0e0;
+	text-align: center;
+	font-weight:bold;
+	vertical-align: middle;
+}
+
+.drawer div:not(:last-child) {
+    border-right: 1px solid  #88ad54; 
+}
+
+.drawer div p {
+	margin: 3px 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
